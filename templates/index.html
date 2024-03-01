@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Blocker/Unblocker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .top-heading {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 70px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 20px;
+            flex: 1;
+            width: 475px;
+        }
+
+        .alert {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .column {
+            flex: 1;
+            box-sizing: border-box;
+        }
+
+        /* Additional styles for animations */
+        .animate-fadeIn {
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-heading text-center mb-4 animate-fadeIn">
+    <h1>Website Blocker/Unblocker</h1>
+</div>
+
+<div class="d-flex animate-fadeIn">
+    <!-- Blocker Container -->
+    <div id="blocker-container" class="container animate-fadeIn">
+        <h2 class="text-center mb-4">Website Blocker</h2>
+
+        <form id="blockForm" class="mb-4">
+            <div class="form-group">
+                <label for="websites">Enter websites to block (comma-separated):</label>
+                <input type="text" class="form-control" id="websites" name="websites" required>
+            </div>
+            <button type="button" class="btn btn-success" onclick="blockWebsites()">Block Websites</button>
+
+            <!-- Alert for success/failure message -->
+            <div id="alertMessage" class="alert alert-dismissible fade show mt-3" role="alert">
+                <strong id="alertText"></strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Unblocker Container -->
+    <div id="unblocker-container" class="container animate-fadeIn">
+        <h2 class="text-center mb-4">Website Unblocker</h2>
+
+        <form id="unblockForm">
+            <div class="form-group">
+                <label for="websites">Enter websites to unblock (comma-separated):</label>
+                <input type="text" class="form-control" id="websites" name="websites" required>
+            </div>
+            <button type="button" class="btn btn-warning" onclick="unblockWebsites()">Unblock Websites</button>
+
+            <!-- Alert for success/failure message -->
+            <div id="unblockAlertMessage" class="alert alert-dismissible fade show mt-3" role="alert">
+                <strong id="unblockAlertText"></strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function blockWebsites() {
+        // Make AJAX request to block_websites route
+        fetch('/block_websites', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(new FormData(document.getElementById('blockForm'))),
+        })
+        .then(response => response.json())
+        .then(data => {
+            showAlert(data.message, data.status, 'alertMessage');
+        });
+    }
+
+    function unblockWebsites() {
+        // Make AJAX request to unblock_websites route
+        fetch('/unblock_websites', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(new FormData(document.getElementById('unblockForm'))),
+        })
+        .then(response => response.json())
+        .then(data => {
+            showAlert(data.message, data.status, 'unblockAlertMessage');
+        });
+    }
+
+    function showAlert(message, status, alertId) {
+        const alertDiv = document.getElementById(alertId);
+        const alertText = alertId === 'alertMessage' ? document.getElementById('alertText') : document.getElementById('unblockAlertText');
+        alertText.textContent = message;
+
+        if (status === 'success') {
+            alertDiv.classList.remove('alert-danger');
+            alertDiv.classList.add('alert-success');
+        } else {
+            alertDiv.classList.remove('alert-success');
+            alertDiv.classList.add('alert-danger');
+        }
+
+        alertDiv.style.display = 'block';
+        alertDiv.classList.add('animate__animated', 'animate__fadeIn');
+
+        setTimeout(() => {
+            alertDiv.style.display = 'none';
+            alertDiv.classList.remove('animate__animated', 'animate__fadeIn');
+        }, 3000); // Hide the alert after 3 seconds
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
