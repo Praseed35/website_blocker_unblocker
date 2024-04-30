@@ -18,14 +18,14 @@ The main features of the application include:
 The application will be accessible at http://localhost:5000 by default.
 
 ## Usage
-#### * 1.) Access the web application through your browser.
-#### * 2.) Enter the websites you want to block or unblock in the respective input fields.
-#### * 3.) Click the "Block Websites" or "Unblock Websites" button to perform the action.
-#### * 4.) Receive real-time feedback on the success or failure of the operation.
+* ####  1.) Access the web application through your browser.
+* ####  2.) Enter the websites you want to block or unblock in the respective input fields.
+* ####  3.) Click the "Block Websites" or "Unblock Websites" button to perform the action.
+* ####  4.) Receive real-time feedback on the success or failure of the operation.
 
 ## Configuration
 ##### The application manipulates the hosts file located at different paths depending on the operating system:
-#### * Windows: 'C:\Windows\System32\drivers\etc\hosts'
-#### * Linux: '/etc/hosts'
-#### * macOS: '/private/etc/hosts'
+* ####  Windows: 'C:\Windows\System32\drivers\etc\hosts'
+* ####  Linux: '/etc/hosts'
+* ####  macOS: '/private/etc/hosts'
 Ensure that the application has necessary permissions to read from and write to the hosts file.
