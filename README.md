@@ -12,7 +12,7 @@ The main features of the application include:
 
 ## Setup
 ### 1.) Clone the repository:
-                git clone https://github.com/Praseed35/website-blocker.git
+                git clone https://github.com/Praseed35/website_blocker_unblocker.git
 ### 2.) Run the application:Execute the following command to start the Flask server:
                 python app.py
 The application will be accessible at http://localhost:5000 by default.
